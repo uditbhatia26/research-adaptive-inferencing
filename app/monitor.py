@@ -1,0 +1,61 @@
+# app/monitor.py
+import psutil
+from datetime import datetime
+
+try:
+    import pynvml
+    pynvml.nvmlInit()
+    GPU_AVAILABLE = True
+except Exception:
+    GPU_AVAILABLE = False
+
+
+def get_cpu_util() -> float:
+    return psutil.cpu_percent(interval=None)
+
+
+def get_memory_info() -> dict:
+    mem = psutil.virtual_memory()
+    return {
+        "cpu_mem_total_gb": round(mem.total / (1024**3), 2),
+        "cpu_mem_used_gb": round(mem.used / (1024**3), 2),
+        "cpu_mem_util_pct": mem.percent,
+    }
+
+
+def get_gpu_stats() -> dict:
+    if not GPU_AVAILABLE:
+        return {
+            "gpu_util": None,
+            "gpu_mem_used_gb": None,
+            "gpu_mem_total_gb": None,
+            "gpu_mem_util_pct": None,
+        }
+
+    try:
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        util = pynvml.nvmlDeviceGetUtilizationRates(handle)
+        mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        return {
+            "gpu_util": util.gpu,
+            "gpu_mem_used_gb": round(mem.used / (1024**3), 2),
+            "gpu_mem_total_gb": round(mem.total / (1024**3), 2),
+            "gpu_mem_util_pct": round((mem.used / mem.total) * 100, 2),
+        }
+    except Exception:
+        return {
+            "gpu_util": None,
+            "gpu_mem_used_gb": None,
+            "gpu_mem_total_gb": None,
+            "gpu_mem_util_pct": None,
+        }
+
+
+def get_system_stats() -> dict:
+    stats = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "cpu_util": get_cpu_util(),
+    }
+    stats.update(get_memory_info())
+    stats.update(get_gpu_stats())
+    return stats
