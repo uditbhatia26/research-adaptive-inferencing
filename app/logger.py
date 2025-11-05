@@ -2,7 +2,7 @@
 import csv
 import os
 
-LOG_FILE = "metrics_log.csv"
+LOG_FILE = "logs.csv"
 
 # Define consistent column order for all logs
 LOG_COLUMNS = [
