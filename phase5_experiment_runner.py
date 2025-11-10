@@ -5,11 +5,32 @@ API_URL = "http://127.0.0.1:8000/infer"
 
 # ✅ Define test prompts (short, medium, long)
 TEST_PROMPTS = [
+    # 🔹 SHORT PROMPTS (CPU likely)
     "What is AI?",
-    "Explain how photosynthesis works.",
-    "Describe the architecture of convolutional neural networks in deep learning.",
-    "Explain in detail how large language models like GPT or Gemini are trained and optimized to handle complex reasoning tasks, multi-step instructions, and contextual understanding over long conversations. Discuss the underlying architecture such as the Transformer, including how attention mechanisms work to allow models to focus on relevant parts of the input sequence. Then describe the training process at scale — including dataset preparation, tokenization, unsupervised pretraining, supervised fine-tuning, and reinforcement learning from human feedback (RLHF). Explain how these models manage memory, gradient accumulation, and distributed training across thousands of GPUs using techniques like data parallelism, model parallelism, and mixed-precision training. Elaborate on the role of optimization algorithms such as AdamW, learning rate schedules, and checkpointing in stabilizing convergence. After that, discuss the major challenges that arise when deploying such models for real-world inference — like latency, energy consumption, and hardware constraints. Describe how quantization, pruning, and distillation help make inference more efficient on edge devices or web environments. Finally, explore how adaptive scheduling strategies between CPU and GPU can be used to balance latency and throughput for real-time web inference systems, especially when handling dynamic workloads or multiple simultaneous user sessions. Provide a comparative perspective on why certain tasks might still perform better on CPU versus GPU, and how intelligent co-scheduling could maximize resource utilization without degrading user experience."
+    "Define quantum computing in simple terms.",
+    "Explain photosynthesis briefly.",
+    "Who invented the Internet?",
+    "What is the capital of France?",
+
+    # 🔸 MEDIUM PROMPTS (mixed CPU/GPU)
+    "Describe how a neural network learns using backpropagation and gradient descent.",
+    "Explain how blockchain ensures data security and integrity in distributed systems.",
+    "How do self-driving cars use computer vision and deep learning to detect objects and make driving decisions?",
+    "Describe how transformers differ from RNNs and CNNs in processing sequential data.",
+    "Explain the process of cloud computing resource allocation and virtualization in modern data centers.",
+
+    # 🔺 LONG / COMPLEX PROMPTS (GPU heavy)
+    "Explain in detail how large language models such as GPT or Gemini are trained on massive text corpora. Discuss the architecture of the Transformer, focusing on how attention mechanisms enable context retention across long sequences. Include the process of dataset preprocessing, tokenization, pretraining objectives (e.g., next-token prediction), and fine-tuning strategies such as reinforcement learning from human feedback (RLHF). Finally, discuss how distributed training, quantization, and model parallelism are used to scale training across thousands of GPUs.",
+    
+    "Write a comprehensive explanation of how genetic algorithms simulate evolution to solve optimization problems. Include examples from scheduling, design, and artificial intelligence. Explain how mutation, crossover, and selection work together to evolve better solutions over generations, and discuss how the balance between exploration and exploitation affects algorithm performance.",
+    
+    "Discuss in depth the ethical challenges and societal impacts of AI in healthcare, including algorithmic bias, patient privacy, transparency, and accountability. Provide real-world examples of AI diagnostic tools, their successes, and the controversies they have sparked regarding trust and responsibility in medical decision-making.",
+    
+    "Describe the architecture, training process, and inference pipeline of a multimodal AI system that combines text, images, and speech data. Explain how cross-attention layers work in multimodal transformers and discuss the challenges of aligning different modalities in a shared latent space for coherent reasoning.",
+    
+    "Provide an extended overview of edge computing and its relationship to cloud AI deployment. Explain how models are optimized for latency, power efficiency, and limited memory. Include how adaptive scheduling strategies between CPU, GPU, and specialized NPUs can improve throughput in real-time edge inference scenarios."
 ]
+
 
 # ✅ Test modes
 MODES = ["cpu", "gpu", "adaptive"]
