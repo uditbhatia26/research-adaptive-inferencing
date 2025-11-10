@@ -26,10 +26,10 @@ def get_memory_info() -> dict:
 def get_gpu_stats() -> dict:
     if not GPU_AVAILABLE:
         return {
-            "gpu_util": None,
-            "gpu_mem_used_gb": None,
-            "gpu_mem_total_gb": None,
-            "gpu_mem_util_pct": None,
+            "gpu_util": 0.0,
+            "gpu_mem_used_gb": 0.0,
+            "gpu_mem_total_gb": 0.0,
+            "gpu_mem_util_pct": 0.0,
         }
 
     try:
@@ -37,17 +37,18 @@ def get_gpu_stats() -> dict:
         util = pynvml.nvmlDeviceGetUtilizationRates(handle)
         mem = pynvml.nvmlDeviceGetMemoryInfo(handle)
         return {
-            "gpu_util": util.gpu,
+            "gpu_util": float(util.gpu),
             "gpu_mem_used_gb": round(mem.used / (1024**3), 2),
             "gpu_mem_total_gb": round(mem.total / (1024**3), 2),
             "gpu_mem_util_pct": round((mem.used / mem.total) * 100, 2),
         }
     except Exception:
+        # Return 0s instead of None if GPU temporarily fails
         return {
-            "gpu_util": None,
-            "gpu_mem_used_gb": None,
-            "gpu_mem_total_gb": None,
-            "gpu_mem_util_pct": None,
+            "gpu_util": 0.0,
+            "gpu_mem_used_gb": 0.0,
+            "gpu_mem_total_gb": 0.0,
+            "gpu_mem_util_pct": 0.0,
         }
 
 

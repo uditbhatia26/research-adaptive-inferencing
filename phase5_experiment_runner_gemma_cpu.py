@@ -31,25 +31,21 @@ TEST_PROMPTS = [
     "Provide an extended overview of edge computing and its relationship to cloud AI deployment. Explain how models are optimized for latency, power efficiency, and limited memory. Include how adaptive scheduling strategies between CPU, GPU, and specialized NPUs can improve throughput in real-time edge inference scenarios."
 ]
 
+mode = 'gpu'
 
-# ✅ Test modes
-MODES = ["cpu", "gpu", "adaptive"]
-
-for mode in MODES:
-    print(f"\n⚙️ Running tests in {mode.upper()} mode...\n")
-    for prompt in TEST_PROMPTS:
-        payload = {"prompt": prompt, "mode": mode}
-        start = time.time()
-        try:
-            response = requests.post(API_URL, json=payload)
-            latency = time.time() - start
-            if response.status_code == 200:
-                data = response.json()
-                print(f"✅ Prompt len={len(prompt.split())} | Model={data['selected_model']} | Latency={round(data['latency_s'],2)}s | Mode={mode}")
-            else:
-                print(f"❌ Error {response.status_code}: {response.text}")
-        except Exception as e:
-            print(f"⚠️ Request failed: {e}")
-        time.sleep(2)  # avoid server overload
+for prompt in TEST_PROMPTS:
+    payload = {"prompt": prompt, "mode": mode}
+    start = time.time()
+    try:
+        response = requests.post(API_URL, json=payload)
+        latency = time.time() - start
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ Prompt len={len(prompt.split())} | Model={data['selected_model']} | Latency={round(data['latency_s'],2)}s | Mode={mode}")
+        else:
+            print(f"❌ Error {response.status_code}: {response.text}")
+    except Exception as e:
+        print(f"⚠️ Request failed: {e}")
+    time.sleep(2)  # avoid server overload
 
 print("\n🎯 All test runs complete! Check logs.csv for results.\n")
