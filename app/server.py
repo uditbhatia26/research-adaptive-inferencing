@@ -3,21 +3,30 @@ from pydantic import BaseModel
 from .model_loader import run_inference
 from .monitor import get_system_stats
 from .scheduler import choose_model
-from .logger import log_metrics   # 🆕 <-- NEW import for CSV logging
+from .logger import log_metrics
 import time
 
-app = FastAPI(title="Adaptive Scheduler - Phase 4 (Metric Logging)")
+app = FastAPI(title="Adaptive Scheduler - Phase 5 (Experiment Mode)")
 
 class InferenceRequest(BaseModel):
     prompt: str
+    mode: str | None = "adaptive"  # "cpu", "gpu", or "adaptive"
 
 @app.post("/infer")
 async def infer(req: InferenceRequest):
     # 1️⃣ Capture pre-inference stats
     stats_before = get_system_stats()
 
-    # 2️⃣ Adaptive scheduling decision
-    selected_model = choose_model(stats_before, req.prompt)
+    # 2️⃣ Choose model based on mode
+    if req.mode == "cpu":
+        selected_model = "phi3"
+        decision_reason = "Forced CPU-only mode"
+    elif req.mode == "gpu":
+        selected_model = "gemma3"
+        decision_reason = "Forced GPU-only mode"
+    else:
+        selected_model = choose_model(stats_before, req.prompt)
+        decision_reason = "Adaptive scheduling decision"
 
     # 3️⃣ Run inference
     start = time.time()
@@ -38,10 +47,12 @@ async def infer(req: InferenceRequest):
     output_tokens = len(output.split())
     throughput = round(output_tokens / latency, 2) if latency > 0 else None
 
-    # 6️⃣ Prepare record for response + CSV logging
+    # 6️⃣ Prepare record for CSV + response
     record = {
         "timestamp": stats_before["timestamp"],
+        "mode": req.mode,
         "selected_model": selected_model,
+        "decision_reason": decision_reason,
         "latency_s": round(latency, 3),
         "prompt_length": len(req.prompt.split()),
         "output_tokens": output_tokens,
@@ -60,9 +71,9 @@ async def infer(req: InferenceRequest):
         "gpu_mem_util_after_pct": stats_after["gpu_mem_util_pct"]
     }
 
-    # 7️⃣ 🆕 NEW: Log it to CSV
+    # 7️⃣ Log metrics
     log_metrics(record)
 
-    # 8️⃣ Return response (keep your detailed output)
-    record["output"] = output[:1500]  # truncate long text for readability
+    # 8️⃣ Return response
+    record["output"] = output[:1200]  # trim long responses
     return record
