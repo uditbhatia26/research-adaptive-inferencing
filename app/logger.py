@@ -7,7 +7,9 @@ LOG_FILE = "logs.csv"
 # Define consistent column order for all logs
 LOG_COLUMNS = [
     "timestamp",
+    "mode",                 # 🆕 include mode
     "selected_model",
+    "decision_reason",      # 🆕 include reason
     "latency_s",
     "prompt_length",
     "output_tokens",

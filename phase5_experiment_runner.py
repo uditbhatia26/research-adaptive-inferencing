@@ -31,4 +31,4 @@ for mode in MODES:
             print(f"⚠️ Request failed: {e}")
         time.sleep(2)  # avoid server overload
 
-print("\n🎯 All test runs complete! Check metrics_log.csv for results.\n")
+print("\n🎯 All test runs complete! Check logs.csv for results.\n")
