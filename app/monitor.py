@@ -24,6 +24,7 @@ def get_memory_info() -> dict:
 
 
 def get_gpu_stats() -> dict:
+    # Always return numeric values
     if not GPU_AVAILABLE:
         return {
             "gpu_util": 0.0,
@@ -42,8 +43,7 @@ def get_gpu_stats() -> dict:
             "gpu_mem_total_gb": round(mem.total / (1024**3), 2),
             "gpu_mem_util_pct": round((mem.used / mem.total) * 100, 2),
         }
-    except Exception:
-        # Return 0s instead of None if GPU temporarily fails
+    except:
         return {
             "gpu_util": 0.0,
             "gpu_mem_used_gb": 0.0,

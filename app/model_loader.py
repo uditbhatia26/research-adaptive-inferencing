@@ -2,19 +2,14 @@
 import requests
 import time
 
-# Ollama configuration
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-DEFAULT_MODEL = "gemma3"  
+DEFAULT_MODEL = "gemma3"
 
 def run_inference(prompt: str, model: str = DEFAULT_MODEL):
-    """
-    Sends a prompt to the Ollama REST API and measures latency.
-    Returns the generated text and latency in seconds.
-    """
     payload = {
         "model": model,
         "prompt": prompt,
-        "stream": False  # ensures we get one complete JSON response
+        "stream": False
     }
 
     start = time.time()

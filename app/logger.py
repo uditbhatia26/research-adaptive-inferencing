@@ -4,12 +4,11 @@ import os
 
 LOG_FILE = "logs.csv"
 
-# Define consistent column order for all logs
 LOG_COLUMNS = [
     "timestamp",
-    "mode",                 # 🆕 include mode
+    "mode",
     "selected_model",
-    "decision_reason",      # 🆕 include reason
+    "decision_reason",
     "latency_s",
     "prompt_length",
     "output_tokens",
@@ -29,17 +28,14 @@ LOG_COLUMNS = [
 ]
 
 def init_log_file():
-    """Create log file with headers if it doesn't exist."""
     if not os.path.exists(LOG_FILE):
-        with open(LOG_FILE, mode="w", newline="") as f:
+        with open(LOG_FILE, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=LOG_COLUMNS)
             writer.writeheader()
 
 def log_metrics(data: dict):
-    """Append a single inference record to CSV log."""
-    init_log_file()  # ensures file exists with headers
-    with open(LOG_FILE, mode="a", newline="") as f:
+    init_log_file()
+    with open(LOG_FILE, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=LOG_COLUMNS)
-        # Only keep the keys that exist in our defined columns
         filtered = {k: data.get(k, None) for k in LOG_COLUMNS}
         writer.writerow(filtered)
