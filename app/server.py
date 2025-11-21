@@ -6,7 +6,7 @@ from .monitor import get_system_stats
 from .logger import log_metrics
 import time
 
-app = FastAPI(title="Adaptive Scheduler - GPU Gemma3 Mode")
+app = FastAPI(title="Adaptive Scheduler - Phi3 Mode")
 
 class InferenceRequest(BaseModel):
     prompt: str

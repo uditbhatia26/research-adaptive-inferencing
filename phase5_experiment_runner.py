@@ -31,7 +31,7 @@ TEST_PROMPTS = [
     "Provide an extended overview of edge computing and its relationship to cloud AI deployment. Explain how models are optimized for latency, power efficiency, and limited memory. Include how adaptive scheduling strategies between CPU, GPU, and specialized NPUs can improve throughput in real-time edge inference scenarios."
 ]
 
-print("\n🚀 Starting GEMMA-3 GPU test run...\n")
+print("\n🚀 Starting Phi-3 GPU test run...\n")
 
 for prompt in TEST_PROMPTS:
     payload = {"prompt": prompt}
@@ -52,4 +52,4 @@ for prompt in TEST_PROMPTS:
 
     time.sleep(2)
 
-print("\n🎯 GEMMA-3 GPU test completed. Check logs.csv\n")
+print("\n🎯 Phi-3 GPU test completed. Check logs.csv\n")
